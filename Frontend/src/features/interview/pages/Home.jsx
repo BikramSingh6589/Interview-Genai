@@ -1,148 +1,156 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import "../style/home.scss"
-import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../../auth/hooks/useAuth.js'
 
 const Home = () => {
-
-    const { loading, generateReport,reports } = useInterview()
-    const [ jobDescription, setJobDescription ] = useState("")
-    const [ selfDescription, setSelfDescription ] = useState("")
-    const resumeInputRef = useRef()
-
     const navigate = useNavigate()
-
-    const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
-        const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
-    }
-
-    if (loading) {
-        return (
-            <main className='loading-screen'>
-                <h1>Loading your interview plan...</h1>
-            </main>
-        )
-    }
+    const { handleLogout } = useAuth()
 
     return (
-        <div className='home-page'>
-
-            {/* Page Header */}
-            <header className='page-header'>
-                <h1>Create Your Custom <span className='highlight'>Interview Plan</span></h1>
-                <p>Let our AI analyze the job requirements and your unique profile to build a winning strategy.</p>
+        <div className='landing-page'>
+            {/* Header */}
+            <header className='landing-header'>
+                <div className='logo'>Lexicon AI</div>
+                <nav>
+                    <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+                    <button onClick={async () => { await handleLogout(); navigate('/login'); }}>Sign Out</button>
+                </nav>
+                <div className='header-actions'>
+                    <div className='search-bar'>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" placeholder="Search reports..." />
+                    </div>
+                    <button className='icon-btn'><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button>
+                    <button className='icon-btn'><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                    <button className='new-report-btn' onClick={() => navigate('/generate')}>New Report</button>
+                </div>
             </header>
 
-            {/* Main Card */}
-            <div className='interview-card'>
-                <div className='interview-card__body'>
-
-                    {/* Left Panel - Job Description */}
-                    <div className='panel panel--left'>
-                        <div className='panel__header'>
-                            <span className='panel__icon'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
-                            </span>
-                            <h2>Target Job Description</h2>
-                            <span className='badge badge--required'>Required</span>
-                        </div>
-                        <textarea
-                            onChange={(e) => { setJobDescription(e.target.value) }}
-                            className='panel__textarea'
-                            placeholder={`Paste the full job description here...\ne.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScript, and large-scale system design...'`}
-                            maxLength={5000}
-                        />
-                        <div className='char-counter'>0 / 5000 chars</div>
+            {/* Hero Section */}
+            <section className='hero-section'>
+                <div className='hero-content'>
+                    <div className='ai-badge'><span className='sparkle'>✦</span> AI-POWERED ANALYSIS</div>
+                    <h1>Transform your <span className='highlight'>Internship Experience</span> into compelling reports.</h1>
+                    <p>Lexicon AI bridges the gap between your daily tasks and professional documentation. Upload your resume and JD to generate high-impact internship summaries in seconds.</p>
+                    <div className='hero-buttons'>
+                        <button className='btn-primary' onClick={() => navigate('/generate')}>Get Started <span>→</span></button>
+                        <button className='btn-secondary'>View Sample</button>
                     </div>
-
-                    {/* Vertical Divider */}
-                    <div className='panel-divider' />
-
-                    {/* Right Panel - Profile */}
-                    <div className='panel panel--right'>
-                        <div className='panel__header'>
-                            <span className='panel__icon'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                            </span>
-                            <h2>Your Profile</h2>
+                    <div className='joined-stats'>
+                        <div className='avatars'>
+                            <img src="https://i.pravatar.cc/40?u=1" alt="user" />
+                            <img src="https://i.pravatar.cc/40?u=2" alt="user" />
+                            <img src="https://i.pravatar.cc/40?u=3" alt="user" />
                         </div>
-
-                        {/* Upload Resume */}
-                        <div className='upload-section'>
-                            <label className='section-label'>
-                                Upload Resume
-                                <span className='badge badge--best'>Best Results</span>
-                            </label>
-                            <label className='dropzone' htmlFor='resume'>
-                                <span className='dropzone__icon'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 16 12 12 8 16" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" /></svg>
-                                </span>
-                                <p className='dropzone__title'>Click to upload or drag &amp; drop</p>
-                                <p className='dropzone__subtitle'>PDF or DOCX (Max 5MB)</p>
-                                <input ref={resumeInputRef} hidden type='file' id='resume' name='resume' accept='.pdf,.docx' />
-                            </label>
-                        </div>
-
-                        {/* OR Divider */}
-                        <div className='or-divider'><span>OR</span></div>
-
-                        {/* Quick Self-Description */}
-                        <div className='self-description'>
-                            <label className='section-label' htmlFor='selfDescription'>Quick Self-Description</label>
-                            <textarea
-                                onChange={(e) => { setSelfDescription(e.target.value) }}
-                                id='selfDescription'
-                                name='selfDescription'
-                                className='panel__textarea panel__textarea--short'
-                                placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
-                            />
-                        </div>
-
-                        {/* Info Box */}
-                        <div className='info-box'>
-                            <span className='info-box__icon'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" stroke="#1a1f27" strokeWidth="2" /><line x1="12" y1="16" x2="12.01" y2="16" stroke="#1a1f27" strokeWidth="2" /></svg>
-                            </span>
-                            <p>Either a <strong>Resume</strong> or a <strong>Self Description</strong> is required to generate a personalized plan.</p>
+                        <p>Joined by <strong>3,000+</strong> interns this semester</p>
+                    </div>
+                </div>
+                <div className='hero-image'>
+                    <div className='image-card'>
+                        <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1000" alt="AI Analysis" />
+                        <div className='status-tag'>
+                            <span className='dot'></span> Report Status: <strong>Analysis Complete</strong>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* Card Footer */}
-                <div className='interview-card__footer'>
-                    <span className='footer-info'>AI-Powered Strategy Generation &bull; Approx 30s</span>
-                    <button
-                        onClick={handleGenerateReport}
-                        className='generate-btn'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" /></svg>
-                        Generate My Interview Strategy
-                    </button>
+            {/* How it Works */}
+            <section className='how-it-works'>
+                <h3>How Lexicon AI Works</h3>
+                <p className='section-desc'>Our proprietary Analysis Engine processes your raw professional data to create industry-standard internship reports.</p>
+                <div className='steps-grid'>
+                    <div className='step-card'>
+                        <div className='icon-box teal'><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                        <h4>Upload Inputs</h4>
+                        <p>Provide your Resume and the Job Description. Our AI maps your actual work against required outcomes.</p>
+                    </div>
+                    <div className='step-card'>
+                        <div className='icon-box dark'><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+                        <h4>AI Context Map</h4>
+                        <p>Lexicon identifies key achievements, technical skills, and professional growth metrics relevant to your field.</p>
+                    </div>
+                    <div className='step-card'>
+                        <div className='icon-box light'><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+                        <h4>Instant Report</h4>
+                        <p>Receive a structured, professional summary ready for submission to academic supervisors or hiring managers.</p>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            {/* Recent Reports List */}
-            {reports.length > 0 && (
-                <section className='recent-reports'>
-                    <h2>My Recent Interview Plans</h2>
-                    <ul className='reports-list'>
-                        {reports.map(report => (
-                            <li key={report._id} className='report-item' onClick={() => navigate(`/interview/${report._id}`)}>
-                                <h3>{report.title || 'Untitled Position'}</h3>
-                                <p className='report-meta'>Generated on {new Date(report.createdAt).toLocaleDateString()}</p>
-                                <p className={`match-score ${report.matchScore >= 80 ? 'score--high' : report.matchScore >= 60 ? 'score--mid' : 'score--low'}`}>Match Score: {report.matchScore}%</p>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-            )}
+            {/* Benefits */}
+            <section className='benefits-section'>
+                <div className='benefits-content'>
+                    <h3>Unrivaled benefits for knowledge workers.</h3>
+                    <p>Stop spending hours staring at a blank page. Let AI handle the heavy lifting of summarization while you focus on your career.</p>
+                    <div className='benefit-item'>
+                        <div className='check-icon'>✓</div>
+                        <div>
+                            <strong>Academic Compliance</strong>
+                            <p>Reports formatted to meet standard university internship criteria.</p>
+                        </div>
+                    </div>
+                    <div className='benefit-item'>
+                        <div className='check-icon'>✓</div>
+                        <div>
+                            <strong>Keyword Optimization</strong>
+                            <p>Automatically highlights the industry keywords that recruiters look for.</p>
+                        </div>
+                    </div>
+                </div>
+                <div className='benefits-cards'>
+                    <div className='stat-card dark'>
+                        <div className='stat-value'>98% Accuracy</div>
+                        <p>Our models are fine-tuned on thousands of high-performing internship portfolios.</p>
+                    </div>
+                    <div className='stat-card light'>
+                        <div className='stat-value'>5 Minute Turnaround</div>
+                        <p>From raw files to a polished report in less time than it takes to brew a coffee.</p>
+                    </div>
+                    <div className='cta-card teal'>
+                        <div className='cta-content'>
+                            <h4>Ready to automate your reporting?</h4>
+                            <p>Join the thousands of students and early-career professionals using Lexicon AI.</p>
+                            <button className='btn-white' onClick={() => navigate('/generate')}>Start Your Free Report</button>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=500" alt="Team" />
+                    </div>
+                </div>
+            </section>
 
-            {/* Page Footer */}
-            <footer className='page-footer'>
-                <a href='#'>Privacy Policy</a>
-                <a href='#'>Terms of Service</a>
-                <a href='#'>Help Center</a>
+            {/* Footer */}
+            <footer className='landing-footer'>
+                <div className='footer-main'>
+                    <div className='footer-brand'>
+                        <div className='logo'>Lexicon AI</div>
+                        <p>The intelligent bridge between experience and documentation. Designed for the next generation of knowledge workers.</p>
+                    </div>
+                    <div className='footer-links'>
+                        <div>
+                            <h5>Product</h5>
+                            <a href="#">How it works</a>
+                            <a href="#">Pricing</a>
+                            <a href="#">Success Stories</a>
+                            <a href="#">Documentation</a>
+                        </div>
+                        <div>
+                            <h5>Company</h5>
+                            <a href="#">About Us</a>
+                            <a href="#">Terms of Service</a>
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Contact</a>
+                        </div>
+                    </div>
+                </div>
+                <div className='footer-bottom'>
+                    <p>© 2024 Lexicon AI Internship Solutions. All rights reserved.</p>
+                    <div className='bottom-links'>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                </div>
             </footer>
         </div>
     )
