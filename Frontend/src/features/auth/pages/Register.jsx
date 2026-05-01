@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { useNavigate, Link } from 'react-router'
 import "../auth.form.scss"
 import { useAuth } from '../hooks/useAuth'
+import toast from 'react-hot-toast'
 
 const Register = () => {
 
@@ -14,8 +15,13 @@ const Register = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await handleRegister({username,email,password})
-        navigate("/")
+        try {
+            await handleRegister({username,email,password})
+            toast.success("Account created successfully!")
+            navigate("/")
+        } catch (err) {
+            toast.error(err.response?.data?.message || err.message || "Registration failed")
+        }
     }
 
     if(loading){

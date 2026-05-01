@@ -13,16 +13,28 @@ const Home = () => {
             <header className='landing-header'>
                 <div className='logo'>Lexicon AI</div>
                 <nav>
+                    <button className="active" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ color: 'var(--accent-color)', fontWeight: 'bold' }}>Home</button>
+                    <button onClick={() => {
+                        const aboutSection = document.getElementById('about-section');
+                        if (aboutSection) aboutSection.scrollIntoView({ behavior: 'smooth' });
+                    }}>About</button>
                     <button onClick={() => navigate('/dashboard')}>Dashboard</button>
-                    <button onClick={async () => { await handleLogout(); navigate('/login'); }}>Sign Out</button>
                 </nav>
                 <div className='header-actions'>
-                    <div className='search-bar'>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" placeholder="Search reports..." />
-                    </div>
-                    <button className='icon-btn'><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></button>
-                    <button className='icon-btn'><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+                    <button 
+                        onClick={async () => { await handleLogout(); navigate('/login'); }} 
+                        style={{ 
+                            background: 'transparent', 
+                            border: '1px solid var(--border-color)', 
+                            color: 'var(--text-primary)', 
+                            padding: '0.5rem 1rem', 
+                            borderRadius: '0.5rem', 
+                            cursor: 'pointer',
+                            fontWeight: '600'
+                        }}
+                    >
+                        Sign Out
+                    </button>
                     <button className='new-report-btn' onClick={() => navigate('/generate')}>New Report</button>
                 </div>
             </header>
@@ -37,20 +49,45 @@ const Home = () => {
                         <button className='btn-primary' onClick={() => navigate('/generate')}>Get Started <span>→</span></button>
                         <button className='btn-secondary'>View Sample</button>
                     </div>
-                    <div className='joined-stats'>
-                        <div className='avatars'>
-                            <img src="https://i.pravatar.cc/40?u=1" alt="user" />
-                            <img src="https://i.pravatar.cc/40?u=2" alt="user" />
-                            <img src="https://i.pravatar.cc/40?u=3" alt="user" />
-                        </div>
-                        <p>Joined by <strong>3,000+</strong> interns this semester</p>
-                    </div>
                 </div>
                 <div className='hero-image'>
                     <div className='image-card'>
                         <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1000" alt="AI Analysis" />
                         <div className='status-tag'>
                             <span className='dot'></span> Report Status: <strong>Analysis Complete</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* About Section */}
+            <section id="about-section" className="about-section" style={{ padding: '8rem 10%', background: 'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)', textAlign: 'center', borderBottom: '1px solid var(--border-color)' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <div className='ai-badge' style={{ marginBottom: '1.5rem', display: 'inline-flex', background: 'rgba(20, 184, 166, 0.1)', color: 'var(--accent-color)', padding: '0.5rem 1rem', borderRadius: '2rem', fontWeight: 'bold' }}>
+                        <span className='sparkle' style={{ marginRight: '0.5rem' }}>🎯</span> OUR MISSION
+                    </div>
+                    <h2 style={{ fontSize: '3rem', marginBottom: '2rem', color: 'var(--text-primary)', fontWeight: '800', letterSpacing: '-0.02em' }}>
+                        Elevate Your Professional Narrative
+                    </h2>
+                    <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', lineHeight: '1.8', marginBottom: '4rem', maxWidth: '800px', margin: '0 auto 4rem auto' }}>
+                        Lexicon AI is an intelligent career acceleration platform designed to translate your raw, unstructured work experience into highly polished, industry-standard documentation. We help you articulate your true value to recruiters, managers, and academic evaluators.
+                    </p>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', textAlign: 'left' }}>
+                        <div style={{ background: 'var(--bg-primary)', padding: '2.5rem', borderRadius: '1.5rem', border: '1px solid var(--border-color)', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', transition: 'transform 0.3s' }}>
+                            <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>🧠</div>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '1rem', fontWeight: '700' }}>Contextual AI Analysis</h3>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>We don't just summarize; our AI deeply analyzes your resume against target job descriptions to identify exact skill alignments and strategic gaps.</p>
+                        </div>
+                        <div style={{ background: 'var(--bg-primary)', padding: '2.5rem', borderRadius: '1.5rem', border: '1px solid var(--border-color)', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', transition: 'transform 0.3s' }}>
+                            <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>⚡</div>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '1rem', fontWeight: '700' }}>Instant Report Generation</h3>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>Transform days of drafting into seconds of processing. Instantly receive beautiful, comprehensive PDF reports highlighting your technical and behavioral strengths.</p>
+                        </div>
+                        <div style={{ background: 'var(--bg-primary)', padding: '2.5rem', borderRadius: '1.5rem', border: '1px solid var(--border-color)', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', transition: 'transform 0.3s' }}>
+                            <div style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>🚀</div>
+                            <h3 style={{ fontSize: '1.5rem', color: 'var(--text-primary)', marginBottom: '1rem', fontWeight: '700' }}>Actionable Insights</h3>
+                            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>Beyond summaries, we provide concrete, day-by-day preparation plans to help you close skill gaps and confidently ace your next technical interview.</p>
                         </div>
                     </div>
                 </div>

@@ -7,9 +7,11 @@ import { useAuth } from '../../auth/hooks/useAuth.js'
 const Analysis = () => {
     const { handleLogout } = useAuth()
 
-    const { loading, generateReport, reports } = useInterview()
+    const { loading, generateReport, reports, renameReport } = useInterview()
     const [ jobDescription, setJobDescription ] = useState("")
     const [ selfDescription, setSelfDescription ] = useState("")
+    const [ editingReportId, setEditingReportId ] = useState(null)
+    const [ editingTitle, setEditingTitle ] = useState("")
     const resumeInputRef = useRef()
 
     const navigate = useNavigate()
@@ -18,6 +20,13 @@ const Analysis = () => {
         const resumeFile = resumeInputRef.current.files[ 0 ]
         const data = await generateReport({ jobDescription, selfDescription, resumeFile })
         navigate(`/interview/${data._id}`)
+    }
+
+    const handleSaveTitle = async (id) => {
+        if (editingTitle.trim()) {
+            await renameReport(id, editingTitle.trim())
+        }
+        setEditingReportId(null)
     }
 
     if (loading) {
@@ -76,8 +85,22 @@ const Analysis = () => {
                 <div className="logo">Lexicon AI <span>Professional Intelligence</span></div>
                 <div className="nav-links">
                     <button onClick={() => navigate('/')}>Home</button>
-                    <button onClick={async () => { await handleLogout(); navigate('/login'); }}>Sign Out</button>
                     <button className="cta" onClick={() => navigate('/dashboard')}>Dashboard</button>
+                    <button onClick={async () => { await handleLogout(); navigate('/login'); }} style={{
+                        background: 'var(--danger)',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.5rem',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                    }}>
+                        <span style={{ fontSize: '1.2rem' }}>⤶</span> Sign Out
+                    </button>
                 </div>
             </header>
 
@@ -87,7 +110,7 @@ const Analysis = () => {
                     <p>Let our AI analyze the job requirements and your unique profile to build a winning strategy.</p>
                 </div>
 
-                <div className='content-grid'>
+                <div className={`content-grid ${!reports || reports.length === 0 ? 'single-column' : ''}`}>
                     <div className='interview-card'>
                         <div className='interview-card__body'>
                             <div className="form-group">
@@ -145,7 +168,37 @@ const Analysis = () => {
                                     <div key={report._id} className='report-card' onClick={() => navigate(`/interview/${report._id}`)}>
                                         <div className='report-icon'>📄</div>
                                         <div className='report-info'>
-                                            <h3>{report.jobDescription?.substring(0, 40) || 'Untitled Analysis'}...</h3>
+                                            {editingReportId === report._id ? (
+                                                <input 
+                                                    autoFocus
+                                                    value={editingTitle}
+                                                    onChange={e => setEditingTitle(e.target.value)}
+                                                    onBlur={() => handleSaveTitle(report._id)}
+                                                    onKeyDown={e => {
+                                                        if (e.key === 'Enter') handleSaveTitle(report._id);
+                                                        if (e.key === 'Escape') setEditingReportId(null);
+                                                    }}
+                                                    onClick={e => e.stopPropagation()}
+                                                    className="title-edit-input"
+                                                    style={{ background: 'transparent', color: 'var(--text-primary)', border: '1px solid var(--accent-color)', borderRadius: '4px', padding: '0.2rem 0.5rem', fontSize: '1rem', fontWeight: '700', outline: 'none', width: '80%' }}
+                                                />
+                                            ) : (
+                                                <h3 className="report-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                    {report.title || 'Untitled Analysis'}
+                                                    <button 
+                                                        className="edit-title-btn" 
+                                                        onClick={e => {
+                                                            e.stopPropagation();
+                                                            setEditingReportId(report._id);
+                                                            setEditingTitle(report.title || 'Untitled Analysis');
+                                                        }}
+                                                        style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.9rem', opacity: 0.6, padding: '0 0.25rem' }}
+                                                        title="Rename Report"
+                                                    >
+                                                        ✏️
+                                                    </button>
+                                                </h3>
+                                            )}
                                             <p className='report-date'>{new Date(report.createdAt).toLocaleDateString()} • {report.technicalQuestions?.length || 0} Questions</p>
                                         </div>
                                         <div className='report-score'>{report.matchScore}%</div>

@@ -87,11 +87,24 @@ const Interview = () => {
                     <button className={activeTab === 'behavioral' ? 'active highlighted' : 'highlighted'} onClick={() => setActiveTab('behavioral')}><span className='icon'>💬</span> Behavioral Guide</button>
                 </nav>
 
-                <div className='sidebar-footer'>
+                <div className='sidebar-footer' style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <button onClick={onLogout} className='logout-link' style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.75rem', 
+                        padding: '0.75rem 1rem', 
+                        background: 'var(--danger-light)', 
+                        color: 'var(--danger)', 
+                        border: '1px solid var(--danger)', 
+                        borderRadius: '0.75rem', 
+                        fontWeight: '600', 
+                        cursor: 'pointer', 
+                        justifyContent: 'center',
+                        transition: 'all 0.2s'
+                    }}>
+                        <span className='icon' style={{ fontSize: '1.2rem' }}>⤶</span> Sign Out
+                    </button>
                     <button className='upload-btn' onClick={() => navigate('/generate')}><span className='icon'>⤒</span> New Analysis</button>
-                    <div className='footer-links'>
-                        <button onClick={onLogout} className='logout-link'><span className='icon'>⤶</span> Sign Out</button>
-                    </div>
                 </div>
             </aside>
 

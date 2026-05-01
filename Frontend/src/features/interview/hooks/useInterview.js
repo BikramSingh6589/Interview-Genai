@@ -1,4 +1,4 @@
-import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf } from "../services/interview.api"
+import { getAllInterviewReports, generateInterviewReport, getInterviewReportById, generateResumePdf, updateInterviewTitle } from "../services/interview.api"
 import { useContext, useEffect } from "react"
 import { InterviewContext } from "../interview.context"
 import { useParams } from "react-router"
@@ -78,6 +78,23 @@ export const useInterview = () => {
         }
     }
 
+    const renameReport = async (interviewId, title) => {
+        try {
+            const response = await updateInterviewTitle(interviewId, title)
+            // Update local state so UI reflects immediately without refetching all
+            if (reports) {
+                setReports(reports.map(r => r._id === interviewId ? { ...r, title } : r))
+            }
+            if (report && report._id === interviewId) {
+                setReport({ ...report, title })
+            }
+            return response
+        } catch (error) {
+            console.log(error)
+            throw error
+        }
+    }
+
     useEffect(() => {
         if (interviewId) {
             getReportById(interviewId)
@@ -86,6 +103,6 @@ export const useInterview = () => {
         }
     }, [ interviewId ])
 
-    return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf }
+    return { loading, report, reports, generateReport, getReportById, getReports, getResumePdf, renameReport }
 
 }

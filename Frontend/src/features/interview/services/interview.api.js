@@ -57,3 +57,11 @@ export const generateResumePdf = async ({ interviewReportId }) => {
 
     return response.data
 }
+
+/**
+ * @description Service to update the title of an interview report.
+ */
+export const updateInterviewTitle = async (interviewId, title) => {
+    const response = await api.patch(`/api/interview/${interviewId}/title`, { title })
+    return response.data
+}

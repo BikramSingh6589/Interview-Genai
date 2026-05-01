@@ -4,21 +4,23 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f8fafc;
+    background-color: var(--bg-primary);
     padding: 2rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    transition: background-color 0.3s ease;
 
     .form-container {
         width: 100%;
         max-width: 500px;
-        background: #ffffff;
+        background: var(--bg-secondary);
         padding: 3rem;
         border-radius: 1rem;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        border: 1px solid #eef2f6;
+        border: 1px solid var(--border-color);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
 
         .form-header {
             text-align: center;
@@ -27,14 +29,14 @@ main {
             h1 {
                 font-size: 2.25rem;
                 font-weight: 700;
-                color: #0f172a;
+                color: var(--text-primary);
                 margin-bottom: 0.5rem;
                 background: none;
                 -webkit-text-fill-color: initial;
             }
 
             p {
-                color: #64748b;
+                color: var(--text-secondary);
                 font-size: 1rem;
                 line-height: 1.5;
             }
@@ -45,7 +47,7 @@ main {
             align-items: center;
             text-align: center;
             margin: 1rem 0;
-            color: #94a3b8;
+            color: var(--text-tertiary);
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -54,7 +56,7 @@ main {
             &::after {
                 content: '';
                 flex: 1;
-                border-bottom: 1px solid #e2e8f0;
+                border-bottom: 1px solid var(--border-color-dark);
             }
 
             &::before {
@@ -73,17 +75,17 @@ main {
             gap: 0.75rem;
             width: 100%;
             padding: 0.75rem;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color-dark);
             border-radius: 0.5rem;
-            color: #334155;
+            color: var(--text-primary);
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
 
             &:hover {
-                background: #f8fafc;
-                border-color: #cbd5e1;
+                background: var(--bg-primary);
+                border-color: var(--text-tertiary);
             }
 
             img {
@@ -94,18 +96,18 @@ main {
 
         p.footer-text {
             text-align: center;
-            color: #64748b;
+            color: var(--text-secondary);
             font-size: 0.875rem;
 
             a {
-                color: #139682;
+                color: var(--accent-color);
                 text-decoration: underline;
                 font-weight: 600;
                 margin-left: 0.25rem;
                 transition: color 0.2s;
 
                 &:hover {
-                    color: #0d7a6a;
+                    color: var(--accent-hover);
                 }
             }
         }
@@ -130,7 +132,7 @@ main {
             label {
                 font-size: 0.75rem;
                 font-weight: 600;
-                color: #334155;
+                color: var(--text-primary);
                 text-transform: uppercase;
                 letter-spacing: 0.025em;
             }
@@ -143,7 +145,7 @@ main {
                 .input-icon {
                     position: absolute;
                     left: 1rem;
-                    color: #94a3b8;
+                    color: var(--text-tertiary);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -151,22 +153,22 @@ main {
 
                 input {
                     width: 100%;
-                    background: #ffffff;
-                    border: 1px solid #e2e8f0;
+                    background: var(--bg-secondary);
+                    border: 1px solid var(--border-color-dark);
                     outline: none;
                     padding: 0.75rem 1rem;
                     padding-left: 2.75rem; // Space for icon
                     border-radius: 0.5rem;
-                    color: #0f172a;
+                    color: var(--text-primary);
                     font-size: 0.9375rem;
                     transition: all 0.2s;
 
                     &::placeholder {
-                        color: #94a3b8;
+                        color: var(--text-tertiary);
                     }
 
                     &:focus {
-                        border-color: #139682;
+                        border-color: var(--accent-color);
                         box-shadow: 0 0 0 3px rgba(19, 150, 130, 0.1);
                     }
                 }
@@ -178,19 +180,19 @@ main {
             align-items: center;
             gap: 0.75rem;
             font-size: 0.875rem;
-            color: #475569;
+            color: var(--text-secondary);
 
             input[type="checkbox"] {
                 width: 1.125rem;
                 height: 1.125rem;
                 border-radius: 0.25rem;
-                border: 1px solid #cbd5e1;
+                border: 1px solid var(--text-tertiary);
                 cursor: pointer;
-                accent-color: #139682;
+                accent-color: var(--accent-color);
             }
 
             a {
-                color: #139682;
+                color: var(--accent-color);
                 font-weight: 600;
                 text-decoration: none;
             }
@@ -200,7 +202,7 @@ main {
             align-self: flex-end;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #139682;
+            color: var(--accent-color);
             text-decoration: none;
             margin-top: -0.75rem;
 
@@ -211,7 +213,7 @@ main {
 
         .button.primary-button {
             margin-top: 0.5rem;
-            background: #139682;
+            background: var(--accent-color);
             color: white;
             padding: 0.875rem;
             border-radius: 0.5rem;
@@ -220,7 +222,7 @@ main {
             box-shadow: none;
 
             &:hover {
-                background: #0d7a6a;
+                background: var(--accent-hover);
                 transform: translateY(-1px);
             }
 
